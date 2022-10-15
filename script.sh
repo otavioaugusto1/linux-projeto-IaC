@@ -1,41 +1,16 @@
 #!/bin/bash
 
-echo "Criando diretórios..."
+echo "Atualizando o servidor..."
+apt-get update
+apt-get upgrade -y
+apt-get install apache2 -y
+apt-get install unzip -y
 
-mkdir /publico
-mkdir /adm
-mkdir /ven
-mkdir /sec
 
-echo "Criando grupos de usuários..."
+echo "Baixando e copiando os arquivos da aplicação..."
 
-groupadd GRP_ADM
-groupadd GRP_VEN
-groupadd GRP_SEC
-
-echo "Criando usuários..."
-
-useradd carlos -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
-useradd maria -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
-useradd joao -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_ADM
-
-useradd debora -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_VEN
-useradd sebastiana -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_VEN
-useradd roberto -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_VEN
-
-useradd josefina -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_SEC
-useradd amanda -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_SEC
-useradd rogerio -m -s /bin/bash -p $(openssl passwd -crypt Senha123) -G GRP_SEC
-
-echo "Especificando permissões dos diretórios...."
-
-chown root:GRP_ADM /adm
-chown root:GRP_VEN /ven
-chown root:GRP_SEC /sec
-
-chmod 770 /adm
-chmod 770 /ven
-chmod 770 /sec
-chmod 777 /publico
-
-echo "Fim....."
+cd /tmp
+wget https://github.com/denilsonbonatti/linux-site-dio/archive/refs/heads/main.zip
+unzip main.zip
+cd linux-site-dio-main
+cp -R * /var/www/html/
